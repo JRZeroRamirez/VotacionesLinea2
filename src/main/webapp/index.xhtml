@@ -1,0 +1,92 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Registro</title>
+    </h:head>
+    <h:body>
+        <br />
+    <h:form id="form">
+    <p:growl id="msgs" /> 
+ 
+    <p:panel header="Registrar candidato" style="margin-bottom:20px">
+        <h:panelGrid columns="2" cellpadding="10">
+            
+            <h:outputLabel for="txt_title" value="Nombre:" style="font-weight:bold"/>
+            <p:inputText id="txt_title" value="#{collectorView.book.title}" required="true" label="Nombre"/>
+            <p:message for="txt_title" />
+            <h:outputText value="#{collectorView.book.title}" />
+ 
+            <h:outputLabel for="number" value="Numero Tarjeton :" style="font-weight:bold"/>
+            <p:inputText id="number" value="#{collectorView.book.integer}" label="Numero Tarjeton">
+                <f:validateDoubleRange minimum="1" maximum="10" />
+            </p:inputText>
+            <p:message for="number" />
+            <h:outputText value="#{collectorView.book.integer}" />
+                  
+            <h:outputLabel for="txt_author" value="Partido :" style="font-weight:bold"/>
+            <p:inputText id="txt_author" value="#{collectorView.book.author}" required="true" label="Partido"/>
+            <p:message for="txt_author" />
+            <h:outputText value="#{collectorView.book.author}" />   
+                 
+            <h:outputLabel for="txt_descripcion" value="Descripcion" style="font-weight:bold"/>
+            <p:inputTextarea id="txt_descripcion" value="#{collectorView.book.descripcion}" required="true" label="Descripcion">
+                <f:validateLength minimum="3" maximum="10" />
+            </p:inputTextarea>
+            <p:message for="txt_descripcion" />
+            <h:outputText value="#{collectorView.book.descripcion}" />
+                                          
+            <p:commandButton id="btn_reset" value="Reiniciar" type="reset"/>           
+            <p:commandButton id="btn_add" value="agregar" update="books msgs @parent" action="#{collectorView.reinit}" >
+            <p:collector value="#{collectorView.book}" addTo="#{collectorView.books}" unique="true"/>
+            </p:commandButton>
+   
+            <p:button outcome="welcomePrimefaces" value="Enviar">
+            <f:param name="productId" value="10" />
+            </p:button>
+        </h:panelGrid>
+    </p:panel>
+ 
+    <p:outputPanel id="books">
+        <p:dataTable value="#{collectorView.books}" var="book" id="booksTable">
+ 
+            <p:column headerText="Nombre"> 
+                <h:outputText value="#{book.title}" />
+            </p:column>
+ 
+            <p:column headerText="Author">
+                <f:facet name="header">
+                    <h:outputText value="Partido" />
+                </f:facet>
+                <h:outputText value="#{book.author}" />
+            </p:column>
+            
+             <p:column headerText="Numero">
+                <f:facet name="header">
+                    <h:outputText value="Numero" />
+                </f:facet>
+                 <h:outputText value="#{book.integer}" />
+            </p:column>
+            
+            <p:column headerText="Descripcion">
+                <f:facet name="header">
+                    <h:outputText value="Descripcion" />
+                </f:facet>
+                <h:outputText value="#{book.descripcion}" />
+            </p:column>
+            
+            <p:column headerText="Action">
+                <p:commandLink value="Remove" update=":form:books" process=":form:books">
+                    <p:collector value="#{book}" removeFrom="#{collectorView.books}" unique="true"/>
+                </p:commandLink>
+            </p:column>
+ 
+        </p:dataTable>
+    </p:outputPanel>
+</h:form>
+    </h:body>
+</html>
+
